@@ -55,8 +55,44 @@ class App extends Component{
 
     }
     render(){
-      return(
+      return this.state.loading ===true ?(
+        <div className="spinner-border text-success" role='status'>
+          <span className="sr-only">Loading........</span>
+        </div>
+      ):(
+        <Router>
+          <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+          position ={toast.POSITION.BOTTOM_CENTER}
+          />
+          <Switch>
+            <Route
+            exact
+            path="/"
+            render={props =><Home{...props}/>}
+            />
 
+            <Route
+            path="/login"
+            render={props =><Login showToast={this.showToast}{...props}/>}
+            />
+            <Route
+            path="/profile"
+            render={props =><Profile showToast={this.showToast}{...props}/>}
+            />
+            <Route
+            path="/signup"
+            render={props =><Signup showToast={this.showToast}{...props}/>}
+            />
+            <Route
+            path="/chat"
+            render={props =><Chat showToast={this.showToast}{...props}/>}
+            />
+
+
+          </Switch>
+        </Router>
       )
     }
 }
