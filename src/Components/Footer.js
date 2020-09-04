@@ -5,8 +5,8 @@ class Footer extends Component{
     Copyright=()=>{
         return(
             <h2 variant="body2" color="textSecondary" align="center">
-            {'Copyright &#169'}
-            {'Shivangi Singh'}
+            <p> Copyright &copy; </p> 
+            {'   Shivangi Singh  '}
             {new Date().getFullYear()}
             {'.'}
         </h2>
