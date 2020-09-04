@@ -1,5 +1,5 @@
-import React from 'react';
-import * as firebase from 'firebase';
+//import React from 'react';
+import  firebase from 'firebase';
 
 var firebaseConfig = {
     apiKey: "AIzaSyCCgKJETvgDay_ZcqyPAvVWiEn0XuDGp30",
@@ -12,5 +12,6 @@ var firebaseConfig = {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+  
 
   export default firebase;

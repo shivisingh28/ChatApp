@@ -9,11 +9,11 @@ import './App.css';
 //Pages
 import Home from './Pages/Home/Home';
 import Chat from './Pages/Chat/Chat';
-import ChatBox from './Pages/ChatBox/ChatBox';
+//import ChatBox from './Pages/ChatBox/ChatBox';
 import Login from './Pages/Login/Login';
 import Profile from './Pages/Profile/Profile';
 import Signup from './Pages/SignUp/Signup';
-import Welcome from './Pages/Welcome/Welcome';
+//import Welcome from './Pages/Welcome/Welcome';
 import firebase from './services/firebase';
 import {toast,ToastContainer} from 'react-toastify';
 
@@ -25,6 +25,7 @@ class App extends Component{
         break;
         case 1:
           toast.success(message)
+          break;
         default:
           break;
     }
@@ -93,7 +94,7 @@ class App extends Component{
 
           </Switch>
         </Router>
-      )
+      );
     }
 }
 export default App;
