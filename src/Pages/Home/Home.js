@@ -56,7 +56,7 @@ export default class HomePage extends Component{
                     </div>
                     <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4 ">
                         <h3 className="content-subhead">
-                            <i class="fa fa-th-large"></i>
+                            <i className="fa fa-th-large"></i>
                             Media
                         </h3>
                         <p> 
@@ -129,7 +129,7 @@ export default class HomePage extends Component{
 
                     <h4>More Information</h4>
                     <p>
-                        To whom it may concern
+                        To whomsoever it may concern
                     </p>
                     <p>
                         This app is developed as a part of my learning of React.js-
