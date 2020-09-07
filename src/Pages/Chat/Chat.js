@@ -10,7 +10,8 @@ export default class Chat extends React.Component{
             isLoading: true,
             isOpenDialogConfirmLogout:false,
             currentPeerUser:null,
-            displayedContactSwitchedNotification:[]
+            displayedContactSwitchedNotification:[],
+            displayedContacts:[]
         }
         this.currentUserName = localStorage.getItem(LoginString.Name);
         this.currentUserId =localStorage.getItem(LoginString.ID);
@@ -20,8 +21,13 @@ export default class Chat extends React.Component{
         this.currentUserDocumentId = localStorage.getItem(LoginString.FirebaseDocumentId);
         this.currentUserMessages=[]
         this.searchUsers = []
+        this.notificationMessagesErase = []
         this.onProfileClick=this.onProfileClick.bind(this)
         this.getListUser = this.getListUser.bind(this)
+        this.renderListUser=this.renderListUser.bind(this)
+        this.getClassnameforUserandNotification=this.getClassnameforUserandNotification.bind(this)
+        this.notificationErase = this.notificationErase.bind(this);
+        this.updaterenderList=this.updaterenderList.bind(this)
     }
 
     logout=()=>{
@@ -71,7 +77,96 @@ export default class Chat extends React.Component{
         }
         this.renderListUser()
     }
-    
+    getClassnameforUserandNotification =(itemId)=>{
+        let number = 0
+        let className = ""
+        let check = false
+        if(this.state.currentPeerUser &&
+            this.state.currentPeerUser.id ===itemId){
+                className = 'viewWrapItemFocused'
+            }else{
+                this.state.displayedContactSwitchedNotification.forEach((item)=>{
+                    if(item.notificationId.length>0){
+                        if(item.notificationId===itemId){
+                            check=true
+                            number=item.number
+                        }
+                    }
+                })
+                if(check === true){
+                    className ="viewWrapItemNotification"
+                }else{
+                    className = 'viewWrapItem'
+                }
+            }
+        return className
+    }
+    notificationErase = (itemId)=>{
+        this.state.displayedContactSwitchedNotification.forEach((el)=>{
+            if(el.notificationId.length>0){
+                if(el.notificationId !==itemId){
+                    this.notificationMessagesErase.push({
+                        notificationId: el.notificationId,
+                        number: el.number
+                    })
+                }
+            }
+        })
+        this.updaterenderList()
+    }
+    updaterenderList=()=>{
+        firebase.firestore().collection('users').doc(this.currentUserDocumentId).update(
+           {messages:this.notificationMessagesErase} 
+        )
+        this.setState({
+            displayedContactSwitchedNotification:this.notificationMessagesErase
+        })
+    }
+    renderListUser = ()=>{
+        if(this.searchUsers.length>0){
+            let viewListUser = []
+            let classname = ""
+            this.searchUsers.map((item)=>{
+                if(item.id!=this.currentUserId){
+                    classname=this.getClassnameforUserandNotification(item.id)
+                    viewListUser.push(
+                        <button
+                        id={item.key}
+                        className={classname}
+                        onClick={()=>{
+                            this.notificationErase(item.id)
+                            this.setState({currentPeerUser:item})
+                            document.getElementById(item.key).style.backgroundColor='#fff'
+                            document.getElementById(item.key).style.color ='#fff'
+                        }}
+                        >
+                            <img
+                            className="viewAvatarItem"
+                            src={item.URL}
+                            alt=""
+                            />
+                            <div className="viewWrapContentItem">
+                                <span className="textItem">
+                                    {`Name : ${item.name}`}
+                                </span>
+                            </div>
+                            {classname === 'viewWrapItemNotification' ?
+                            <div className="notificationpragraph">
+                            <p id={item.key} className="newmessages">New Messages</p>
+                            </div> : null}
+                        </button>
+                    )
+                }
+            })
+                
+                this.setState({
+                    displayedContacts:viewListUser
+               
+            })
+        }else{
+            console.log("No User is Present")
+        }
+    }
     render(){
         return(
             <div className="root">
@@ -86,6 +181,7 @@ export default class Chat extends React.Component{
                             />
                             <button className="Logout" onClick={this.logout}>Logout</button>
                         </div>
+                        {this.state.displayedContacts}
                     </div>
                 </div>
                 

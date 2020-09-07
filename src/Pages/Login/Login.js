@@ -136,7 +136,7 @@ export default class Login extends React.Component {
                         </div>
                         <div>
                             <Typography component="h1" variant="h5"
-                                SIGN IN TO />
+                                SIGN IN TO ></Typography>
                         </div>
                         <div>
                             <Link to="/">
