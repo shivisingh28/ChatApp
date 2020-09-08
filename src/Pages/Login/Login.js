@@ -37,7 +37,7 @@ export default class Login extends React.Component {
             this.setState({ isLoading: false }, () => {
                 this.setState({ isLoading: false })
                 this.props.showToast(1, 'Login success')
-                this.props.history.push('./chat')
+                this.props.history.push('/chat')
             })
         } else {
             this.setState({ isLoading: false })
@@ -118,7 +118,7 @@ export default class Login extends React.Component {
             marginTop: '50px'
         }
         const avatar = {
-            backgroundColor: 'black',
+            backgroundColor: 'green',
         }
 
         return (

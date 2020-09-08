@@ -1,7 +1,7 @@
 import React from 'react';
 import './Profile.css';
 import ReactLoading from 'react-loading';
-import 'react-toastify/dist/Reacttoastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import firebase from '../../services/firebase';
 import images from '../../ProjectImages/ProjectImages';
 import LoginString from '../Login/LoginStrings';
@@ -38,8 +38,68 @@ export default class Profile extends React.Component{
     onChangeAvatar =(event)=>{
         if(event.target.files && event.target.files[0]){
             const prefixFiletype = event.target.files[0].type.toString()
-            if(prefixFiletype.indexof(LoginString.PREFIX_IMAGE)!== 0)
+            if(prefixFiletype.indexOf(LoginString.PREFIX_IMAGE)!== 0){
+                this.props.showToast(0,"This file is not an image")
+                return
+            }
+            this.newPhoto = event.target.files[0]
+            this.setState({photoUrl : URL.createObjectURL(event.target.files[0])})
+        } else {
+            this.props.showToast(0,"Something wrong with input file")
         }
+    }
+    uploadAvatar = ()=>{
+        this.setState({isLoading:true})
+        if(this.newPhoto){
+            const uploadTask = firebase.storage()
+            .ref()
+            .child(this.state.id)
+            .put(this.newPhoto)
+            uploadTask.on(
+                LoginString.UPLOAD_CHANGED,
+                null,
+                err =>{
+                    this.props.showToast(0,err.message)
+                },
+                ()=>{
+                    uploadTask.snapshot.ref.getDownloadURL().then(downloadURL =>{
+                        this.updateUserInfo(true , downloadURL)
+                    })
+                }
+            )
+        }else{
+            this.updateUserInfo(false,null)
+        }
+    }
+    updateUserInfo =(isUpdatedPhotoURL,downloadURL)=>{
+        let newinfo
+        if(isUpdatedPhotoURL){
+            newinfo={
+                name:this.state.name,
+                Description:this.state.aboutMe,
+                URL:downloadURL
+            }
+        }else{
+            newinfo={
+                name:this.state.name,
+                Description:this.state.aboutMe
+
+            }
+            firebase.firestore().collection('users')
+            .doc(this.state.documentKey)
+            .update(newinfo)
+            .then(data =>{
+                localStorage.setItem(LoginString.Name,this.state.name)
+                localStorage.setItem(LoginString.Description,this.state.aboutMe)
+                if(isUpdatedPhotoURL){
+                    localStorage.setItem(LoginString.PhotoURL,downloadURL)
+                }
+                this.setState({isLoading:false})
+                this.props.showToast(1,'Update info success')
+
+            })
+        }
+
     }
     render(){
         return(
@@ -84,7 +144,7 @@ export default class Profile extends React.Component{
                         SAVE
                     </button>
                     <button className="btnback" onClick={()=>{this.props.history.push('/chat')}}>
-                        SAVE
+                        BACK
                     </button>
                 </div>
                 {this.state.isLoading ?(
