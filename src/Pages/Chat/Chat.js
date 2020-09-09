@@ -2,7 +2,10 @@ import React from 'react';
 import LoginString from "../Login/LoginStrings";
 import firebase from "../../services/firebase";
 import './Chat.css';
-import ReactLoading from 'react-loading';
+import images from '../../ProjectImages/ProjectImages';
+import ChatBox from '../ChatBox/ChatBox';
+import Welcome  from '../Welcome/Welcome';
+//import ReactLoading from 'react-loading';
 export default class Chat extends React.Component{
     constructor(props){
         super(props)
@@ -22,6 +25,8 @@ export default class Chat extends React.Component{
         this.currentUserMessages=[]
         this.searchUsers = []
         this.notificationMessagesErase = []
+        this.displayedContacts=[]
+
         this.onProfileClick=this.onProfileClick.bind(this)
         this.getListUser = this.getListUser.bind(this)
         this.renderListUser=this.renderListUser.bind(this)
@@ -39,6 +44,7 @@ export default class Chat extends React.Component{
         this.props.history.push('/profile')
     }
     componentDidMount(){
+       // let notificationMessages=[]
         firebase.firestore().collection('users').doc(this.currentUserDocumentId).get()
         .then((doc)=>{
             doc.data().messages.map((item)=>{
@@ -125,8 +131,8 @@ export default class Chat extends React.Component{
     renderListUser = ()=>{
         if(this.searchUsers.length>0){
             let viewListUser = []
-            let classname = ""
-            this.searchUsers.map((item)=>{
+            let classname = ''
+            this.displayedContacts.map((item)=>{
                 if(item.id!=this.currentUserId){
                     classname=this.getClassnameforUserandNotification(item.id)
                     viewListUser.push(
@@ -135,15 +141,19 @@ export default class Chat extends React.Component{
                         className={classname}
                         onClick={()=>{
                             this.notificationErase(item.id)
-                            this.setState({currentPeerUser:item})
-                            document.getElementById(item.key).style.backgroundColor='#fff'
+                            this.setState({currentPeerUser:item,
+                            displayedContactSwitchedNotification:this.notificationMessagesErase})
+                           document.getElementById(item.key).style.backgroundColor='#fff'
+                            if(document.getElementById(item.key)){
                             document.getElementById(item.key).style.color ='#fff'
+                            }
                         }}
                         >
                             <img
                             className="viewAvatarItem"
                             src={item.URL}
                             alt=""
+                            placeholder={images.emptyphoto}
                             />
                             <div className="viewWrapContentItem">
                                 <span className="textItem">
@@ -162,7 +172,7 @@ export default class Chat extends React.Component{
                 this.setState({
                     displayedContacts:viewListUser
                
-            })
+            });
         }else{
             console.log("No User is Present")
         }
@@ -181,7 +191,24 @@ export default class Chat extends React.Component{
                             />
                             <button className="Logout" onClick={this.logout}>Logout</button>
                         </div>
+                        <div className="rootsearchbar">
+                            <div className="input-container">
+                                <i className="fa fa-search icon"></i>
+                                <input className="input-field"
+                                type="text"
+                                onChange={this.searchHandler}
+                                placeholder="Search"/>
+                            </div>
+                        </div>
                         {this.state.displayedContacts}
+                    </div>
+                    <div className="viewBoard">
+                        {this.state.currentPeerUser ?(
+                          <ChatBox/>) :(<Welcome 
+                            currentUserName={this.currentUserName}
+                            currentUserPhoto={this.currentUserPhoto}
+                          />
+                          )}
                     </div>
                 </div>
                 
