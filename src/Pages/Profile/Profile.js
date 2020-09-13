@@ -8,7 +8,7 @@ import LoginString from '../Login/LoginStrings';
 
 export default class Profile extends React.Component{
     constructor(props){
-        super(props);
+        //super(props);
         this.state ={
             isLoading:false,
             documentKey: localStorage.getItem(LoginString.FirebaseDocumentId),
