@@ -19,8 +19,6 @@ export default class Chat extends React.Component {
 		this.currentUserName = localStorage.getItem(LoginString.Name);
 		this.currentUserId = localStorage.getItem(LoginString.ID);
 		this.currentUserPhoto = localStorage.getItem(LoginString.PhotoURL);
-		//  this.currentUserMessages =localStorage.getItem(LoginString.Messages);
-
 		this.currentUserDocumentId = localStorage.getItem(
 			LoginString.FirebaseDocumentId
 		);
@@ -28,6 +26,7 @@ export default class Chat extends React.Component {
 		this.searchUsers = [];
 		this.notificationMessagesErase = [];
         this.displayedContacts = [];
+        //this.displayedContactswithNotification=[]
 
 		this.onProfileClick = this.onProfileClick.bind(this);
 		this.getListUser = this.getListUser.bind(this);
@@ -285,7 +284,9 @@ export default class Chat extends React.Component {
 					</div>
 					<div className="viewBoard">
 						{this.state.currentPeerUser ? (
-							<ChatBox />
+							<ChatBox currentPeerUser={this.state.currentPeerUser}
+							showToast = {this.props.showToast}
+							 />
 						) : (
 							<Welcome
 								currentUserName={this.currentUserName}

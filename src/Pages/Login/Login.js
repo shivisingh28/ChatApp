@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import firebase from '../../services/firebase';
 
@@ -20,7 +20,6 @@ export default class Login extends React.Component {
         super(props);
         this.state = {
             isLoading: true,
-            error: "",
             email: "",
             password: ""
         }
@@ -45,7 +44,7 @@ export default class Login extends React.Component {
     }
     async handleSubmit(event) {
         event.preventDefault();
-        this.setState({ error: "" });
+        
 
         await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(async result => {
@@ -70,10 +69,9 @@ export default class Login extends React.Component {
                 }
                 this.props.history.push('/chat')
             }).catch(function (error) {
-                this.setState({
-                    error: "error while signing in , please try again !!"
+                document.getElementById('1').innerHTML="incorrect email/password or poor internet"
                 })
-            })
+            
     }
 
     render() {
@@ -196,7 +194,9 @@ export default class Login extends React.Component {
                                     Sign Up
                             </Link>
                             </div>
-
+                        <div className="error">
+                            <p id='1' style={{color:"red"}}></p>
+                        </div>
 
                         </form>
                     </div>

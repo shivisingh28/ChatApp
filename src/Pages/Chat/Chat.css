@@ -52,7 +52,7 @@
     height: 45px;
     background-image: url(../../Images/nopic.jpg);
     left:10px;
-   position: absolute;
+    position: absolute;
     cursor: pointer;
     border-radius: 50px;
 }
@@ -141,7 +141,7 @@
     max-height: 100vh;
     min-height: 90vh;
     height: auto;
-    width: 40vh;
+    width: 50vh;
     /* padding-top: 10px; */
     /* padding-bottom: 10px; */
    
