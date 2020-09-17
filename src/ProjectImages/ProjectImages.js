@@ -1,6 +1,7 @@
 const images={
     profile:require('../Images/profile.jpeg'),
     nopic :require('../Images/profile.jpeg'),
+    dp1:require('../Images/image.png'),
     choosefile : require('../Images/icon.png'),
     mim1 : require('../Images/mim1.gif'),
     mim2 : require('../Images/mim2.gif'),

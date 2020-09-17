@@ -50,7 +50,7 @@
 .ProfilePicture {
     width: 45px;
     height: 45px;
-    background-image: url(../../Images/nopic.jpg);
+    background-image: url(../../Images/image.png);
     left:10px;
     position: absolute;
     cursor: pointer;
@@ -212,7 +212,7 @@
     height: 50px;
     border-radius: 25px;
     object-fit: cover;
-    background-image: url(../../Images/nopic.jpg)
+    /*background-image: url(../../Images/.jpg)*/
 
 }
 
